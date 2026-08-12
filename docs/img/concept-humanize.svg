@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 168" width="480" height="168" role="img" aria-label="일반 매크로는 시작점에서 끝점까지 직선으로 순간 이동하지만, 잇다는 곡선 궤적을 따라 가속하고 감속하며 사람이 움직이듯 이동하는 비교 그림">
+  <rect x="0" y="0" width="480" height="168" rx="14" fill="#1d222d"/>
+
+  <text x="20" y="30" fill="#6b7386" font-family="Segoe UI, Malgun Gothic, sans-serif" font-size="11" font-weight="700">일반 매크로</text>
+  <circle cx="40" cy="54" r="5" fill="#8b93a8"/>
+  <circle cx="420" cy="54" r="5" fill="#8b93a8"/>
+  <line x1="40" y1="54" x2="420" y2="54" stroke="#8b93a8" stroke-width="1.6" stroke-dasharray="3 5"/>
+  <text x="230" y="46" fill="#8b93a8" font-family="Segoe UI, Malgun Gothic, sans-serif" font-size="10.5" text-anchor="middle">즉시 이동 (텔레포트)</text>
+
+  <text x="20" y="96" fill="#ee7f63" font-family="Segoe UI, Malgun Gothic, sans-serif" font-size="11" font-weight="700">잇다</text>
+  <circle cx="40" cy="128" r="5" fill="#ee7f63"/>
+  <circle cx="420" cy="128" r="5" fill="#ee7f63"/>
+  <path d="M40 128 C 130 66, 330 66, 420 128" fill="none" stroke="#ee7f63" stroke-width="2"/>
+  <circle cx="66" cy="112" r="2.2" fill="#ee7f63"/>
+  <circle cx="98" cy="94" r="2.2" fill="#ee7f63"/>
+  <circle cx="150" cy="76" r="2.2" fill="#ee7f63"/>
+  <circle cx="230" cy="68" r="2.2" fill="#ee7f63"/>
+  <circle cx="310" cy="76" r="2.2" fill="#ee7f63"/>
+  <circle cx="362" cy="94" r="2.2" fill="#ee7f63"/>
+  <circle cx="394" cy="112" r="2.2" fill="#ee7f63"/>
+  <text x="230" y="150" fill="#ee7f63" font-family="Segoe UI, Malgun Gothic, sans-serif" font-size="10.5" text-anchor="middle">곡선 궤적 · 가속 · 감속 · 좌표 오차</text>
+</svg>
