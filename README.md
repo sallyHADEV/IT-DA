@@ -14,25 +14,8 @@ GitHub Pages로 그대로 띄운 것이다)
 
 ## 다운로드
 
-빌드 없이 바로 쓰려면 [Releases](../../releases/latest)에서 최신 zip을 받아 압축을 풀고
-`itda.exe`를 실행한다. Python 설치가 필요 없다.
-
-## 의존성
-
-소스에서 실행하거나 개발할 때만 필요하다 — 위 Releases의 실행 파일은 전부 번들되어 있어
-따로 설치할 것이 없다.
-
-| 패키지 | 역할 |
-|---|---|
-| [PyQt6](https://pypi.org/project/PyQt6/) | GUI 프레임워크 — 캔버스·도크·대화상자 전부 |
-| [opencv-python](https://pypi.org/project/opencv-python/) | 이미지 전처리·템플릿 매칭 (이미지 찾기/대기) |
-| [numpy](https://pypi.org/project/numpy/) | 화면 캡처 배열 연산 |
-| [Pillow](https://pypi.org/project/Pillow/) | 이미지 인코딩/저장 |
-| [pytest](https://pypi.org/project/pytest/) | 테스트 (개발 전용) |
-
-```bash
-pip install -r requirements.txt
-```
+[Releases](../../releases/latest)에서 최신 zip을 받아 압축을 풀고 `itda.exe`를 실행한다.
+Python 설치가 필요 없다.
 
 ### OCR(글자 읽기) — Tesseract 별도 설치
 
@@ -59,16 +42,7 @@ pip install -r requirements.txt
   시뮬레이션한다. `F8` 검사는 끊긴 연결이나 순환 호출 같은 문제를 미리 잡아낸다.
 - **사람처럼 움직인다** — 곡선 궤적, 가속/감속, 좌표·타이밍 오차를 프로파일로 켜고 끌 수 있다.
 
-## 실행 (소스에서)
-
-```bash
-pip install -r requirements.txt
-python -m itda
-```
-
-프로젝트 폴더를 바로 열려면: `python -m itda C:\경로\내프로젝트`
-
-### 처음 매크로 만들기
+## 처음 매크로 만들기
 
 1. **플로우를 만든다** — 팔레트에서 노드를 끌어다 놓고 연결한다.
    첫 노드는 보통 `창 맞추기`(대상 창을 정해진 크기로 고정 → 좌표가 어긋나지 않는다).
@@ -80,25 +54,6 @@ python -m itda
 
 > **멈추는 방법: `F12`.** 잇다 창이 뒤에 있어도 동작하는 전역 단축키다.
 > 매크로가 마우스를 잡고 있으면 정지 버튼을 누르기 어려우므로 이쪽을 기억해 두는 편이 좋다.
-
-## 빌드 (실행 파일 만들기)
-
-```bash
-python tools/build.py
-```
-
-아이콘 생성 → PyInstaller 빌드 → 실제로 실행해 자체 점검까지 한 번에 한다.
-결과는 `dist/itda` 폴더이며, 폴더째 압축해 넘기면 파이썬 없이 실행된다
-(`itda.exe`가 같은 폴더의 `_internal`을 참조하므로 둘을 분리하면 안 된다).
-
-`itda-check.exe --selftest`는 콘솔 판 — 빌드가 온전한지 확인할 때 쓴다
-(창 프로그램은 stdout이 없어 출력이 보이지 않는다).
-
-## 테스트
-
-```bash
-python -m pytest tests -q
-```
 
 ## 화면 구성
 
@@ -115,45 +70,7 @@ python -m pytest tests -q
 
 자세한 화면별 안내는 **[사용 설명서](https://sallyhadev.github.io/IT-DA/)** 참고.
 
-## 구조
+## 개발하기
 
-| 경로 | 역할 |
-|---|---|
-| `itda/core/` | 데이터 모델, 프로젝트 IO, 파라미터 스키마, 레지스트리, 변수, 타이밍, 이벤트 버스 |
-| `itda/actions/` | 액션 타입 정의(파라미터 스키마 + 실행부) — 인식/입력/흐름/데이터/도구 |
-| `itda/vision/` | 화면 캡처, 이미지 매칭, OCR, 영역 자동 분할 |
-| `itda/engine/` | 실행 엔진, 스케줄러(멀티 플로우), 입력 중재자, 상황 판정/전이, 데모 재생기 |
-| `itda/gui/` | 메인 윈도우, 캔버스, 패널, 대화상자, 작업 도구 |
-
-설계 배경은 [docs/설계.md](docs/설계.md) 참고.
-
-### 액션 추가하기
-
-클래스 하나만 등록하면 팔레트·속성 폼·저장/로드가 전부 따라온다. GUI 코드는 건드리지 않는다.
-
-```python
-@register_action
-class MyAction(ActionType):
-    ID = "my_action"
-    LABEL = "내 동작"
-    CATEGORY = "입력"
-    PARAMS = [Field("count", "int", "횟수", 1, minimum=1, maximum=99)]
-
-    @classmethod
-    def summary(cls, params):
-        return f"내 동작 {params['count']}회"
-```
-
-## 프로젝트 파일 포맷
-
-프로젝트는 폴더 하나이며 내용은 전부 JSON + PNG다. 플로우 파일을 복사해 다른 프로젝트에
-붙여 넣으면 그대로 모듈이 된다.
-
-```
-MyProject/
-  project.json          타이밍 프로파일, 엔트리 플로우/우선순위, 전역 변수
-  flows/*.flow.json     플로우 하나 = 파일 하나
-  objects/objects.json  타겟 객체 (이름/태그/이미지 목록/매칭 옵션)
-  objects/img/*.png
-  states/states.json    상황 정의 + 전이 그래프 + 워처 설정
-```
+소스에서 실행·빌드하거나, 코드 구조를 보거나, 새 액션을 추가하려면
+**[CONTRIBUTING.md](CONTRIBUTING.md)** 참고.
