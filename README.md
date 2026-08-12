@@ -17,6 +17,11 @@ GitHub Pages로 그대로 띄운 것이다)
 [Releases](../../releases/latest)에서 최신 zip을 받아 압축을 풀고 `itda.exe`를 실행한다.
 Python 설치가 필요 없다.
 
+> **클릭·키 입력이 안 먹힌다면 관리자 권한으로 실행해볼 것.** Windows는 권한이 낮은
+> 프로그램이 관리자 권한으로 뜬 창(일부 게임, 보안 프로그램 등)에 입력을 보내는 것을
+> 막는다(UIPI). 대상 프로그램을 관리자 권한으로 실행 중이라면 잇다도 `itda.exe`를
+> 마우스 우클릭 → **관리자 권한으로 실행**해야 동작한다.
+
 ### OCR(글자 읽기) — Tesseract 별도 설치
 
 `글자 읽기(OCR)` 액션을 쓰려면 [Tesseract OCR (UB-Mannheim 빌드)](https://github.com/UB-Mannheim/tesseract/wiki)를
@@ -46,7 +51,6 @@ Python 설치가 필요 없다.
 - **사람처럼 움직인다** — 곡선 궤적, 가속/감속, 좌표·타이밍 오차를 프로파일로 켜고 끌 수 있다.
 
   <img src="docs/img/concept-humanize.svg" width="420" alt="일반 매크로는 시작점에서 끝점까지 직선으로 순간 이동하지만, 잇다는 곡선 궤적을 따라 가속·감속하며 이동한다는 비교 그림">
-
 
 ## 처음 매크로 만들기
 
