@@ -7,8 +7,10 @@ UiPath를 참조하되 무거운 기능은 걷어내고, 한 가지 개념만 �
 스스로 그 화면으로 이동한 뒤 동작한다."** 좌표를 무작정 클릭하는 매크로가 아니라
 지금 화면이 무엇인지 스스로 판정하고 움직인다.
 
-📖 **[사용 설명서 보기](https://sallyhadev.github.io/IT-DA/)** — 실제 화면과 개념도로 보는 전체 가이드
-(저장소 안의 [`docs/index.html`](docs/index.html)을 GitHub Pages로 그대로 띄운 것이다)
+## 📖 [사용 설명서 보기](https://sallyhadev.github.io/IT-DA/)
+
+실제 화면과 개념도로 보는 전체 가이드. (저장소 안의 [`docs/index.html`](docs/index.html)을
+GitHub Pages로 그대로 띄운 것이다)
 
 ## 다운로드
 
