@@ -3,12 +3,26 @@
 from __future__ import annotations
 
 import sys
+from pathlib import Path
 
 from PyQt6.QtCore import Qt
+from PyQt6.QtGui import QIcon
 from PyQt6.QtWidgets import QApplication
 
 from itda import APP_NAME, APP_NAME_EN, APP_VERSION
 from itda.core import registry
+
+
+def _icon_path() -> Path:
+    """앱 아이콘 위치.
+
+    exe 리소스에 박힌 아이콘은 탐색기·바로가기에만 쓰이고, 실행 중인 창의 제목표시줄·
+    작업표시줄 아이콘은 Qt 가 직접 로드해서 ``setWindowIcon`` 으로 알려줘야 한다 — 안
+    부르면 빈 아이콘으로 뜬다. PyInstaller(onedir)로 묶으면 ``sys._MEIPASS`` 아래에
+    ``itda/resources/itda.ico`` 로 같이 들어간다(itda.spec의 datas).
+    """
+    base = Path(getattr(sys, "_MEIPASS", None) or Path(__file__).resolve().parent.parent)
+    return base / "itda" / "resources" / "itda.ico"
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -33,6 +47,10 @@ def main(argv: list[str] | None = None) -> int:
     app.setApplicationDisplayName(f"{APP_NAME} ({APP_NAME_EN})")
     app.setApplicationVersion(APP_VERSION)
     app.setOrganizationName("IT-DA")
+
+    icon_path = _icon_path()
+    if icon_path.is_file():
+        app.setWindowIcon(QIcon(str(icon_path)))
 
     registry.load_builtins()
 
