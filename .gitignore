@@ -8,12 +8,18 @@ venv/
 .pytest_cache/
 .vscode/
 .idea/
+.claude/
 *.log
 
 # 사용자 작업 산출물
 /workspace/
 *.itda-backup
 /테스트 프로잭트/
+
+# 내부 개발 기록 (공개 저장소에 올리지 않음)
+/docs/2차-개발-계획.md
+/docs/세션-요약.md
+/docs/테스트-지침-프롬프트.md
 
 # 크레덴셜 및 환경 변수
 .env
