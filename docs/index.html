@@ -811,6 +811,54 @@
           </div>
           <figcaption>왼쪽은 프로파일의 기본 임계값(88%)을 그대로 쓰는 상태, 오른쪽은 슬라이더를 "정확히 일치" 쪽으로 옮겨 72%까지 낮춘 상태입니다.</figcaption>
         </div>
+        <div class="block">
+          <h3><span class="dot">▸</span> 클릭 좌표는 어떻게 정해지나</h3>
+          <p><code class="tag">클릭</code> · <code class="tag">마우스 이동</code> 같은 액션은 목표 지정 방식을 <b>고정 좌표 / 변수 / 객체 / 현재 위치</b> 중에서 고릅니다. 실무에서 가장 많이 쓰는 <b>객체</b> 방식은 매칭된 영역의 <b>중심점</b>에 그 객체의 <b>클릭 보정(X/Y)</b>— 객체 속성 패널에서 정한 고정 오프셋 — 을 더해 1차 목표 좌표를 정합니다. 여기까지는 매번 같은 지점입니다.</p>
+          <p>그다음이 핵심입니다 — 이 좌표는 그대로 클릭되지 않고, <b>좌표 오차(<code class="tag">click_offset_px</code>, 기본 ±2px)</b> 가 매번 새로 뽑은 난수만큼 한 번 더 밀어낸 뒤에야 실제 클릭이 나갑니다. 이 흔들림은 <b>F7 타이밍 다이얼로그</b>에서 조절하는 값으로, <b>"사람처럼 움직이기"를 완전히 꺼도 별도로 계속 적용</b>됩니다 — 사람처럼 움직이기는 시작점부터 목표까지 가는 <b>경로</b>(곡선·가속감속)만 담당하고, 목표 지점 자체를 흔드는 일은 하지 않기 때문입니다.</p>
+
+          <figure>
+            <div class="frame diagram pad">
+              <span class="chip diagram">개념도</span>
+              <svg viewBox="0 0 680 200" role="img" aria-label="객체 인식 영역의 중심점에 클릭 보정을 더해 1차 목표를 정하고, 좌표 오차만큼 매번 다른 방향으로 무작위로 밀어낸 뒤 실제 클릭 좌표가 정해지는 과정" style="width:100%; height:auto;">
+                <defs>
+                  <marker id="af6" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+                    <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
+                  </marker>
+                </defs>
+
+                <rect x="16" y="52" width="168" height="104" rx="9" fill="#2a3040" stroke="#3a4256" stroke-width="1.6" stroke-dasharray="5 4"/>
+                <text x="100" y="42" fill="#fff" font-size="12" font-weight="700" text-anchor="middle">객체 인식 영역</text>
+                <circle cx="100" cy="104" r="4" fill="#8b93a8"/>
+                <text x="108" y="98" fill="#9aa3b8" font-size="9.5">중심점</text>
+                <line x1="100" y1="104" x2="128" y2="126" stroke="#f0a35a" stroke-width="1.5" marker-end="url(#af6)"/>
+                <circle cx="128" cy="126" r="4" fill="#f0a35a"/>
+                <text x="118" y="148" fill="#f0a35a" font-size="9.5">클릭 보정</text>
+
+                <line x1="184" y1="104" x2="234" y2="104" stroke="currentColor" stroke-width="1.6" marker-end="url(#af6)" opacity=".8"/>
+
+                <circle cx="330" cy="104" r="46" fill="none" stroke="#ee7f63" stroke-width="1.6" stroke-dasharray="4 4"/>
+                <circle cx="330" cy="104" r="4" fill="#f0a35a"/>
+                <circle cx="316" cy="90" r="3" fill="#ee7f63" opacity=".55"/>
+                <circle cx="350" cy="80" r="3" fill="#ee7f63" opacity=".55"/>
+                <circle cx="356" cy="118" r="3" fill="#ee7f63" opacity=".55"/>
+                <circle cx="308" cy="122" r="3" fill="#ee7f63" opacity=".55"/>
+                <circle cx="334" cy="130" r="3" fill="#ee7f63" opacity=".55"/>
+                <text x="330" y="38" fill="#ee7f63" font-size="12" font-weight="700" text-anchor="middle">좌표 오차 ±Npx</text>
+                <text x="330" y="172" fill="#9aa3b8" font-size="9.5" text-anchor="middle">실행마다 새로 뽑는 난수</text>
+
+                <line x1="378" y1="104" x2="428" y2="104" stroke="currentColor" stroke-width="1.6" marker-end="url(#af6)" opacity=".8"/>
+
+                <rect x="432" y="70" width="232" height="68" rx="9" fill="#2a3040" stroke="#ee7f63" stroke-width="2"/>
+                <circle cx="470" cy="104" r="6" fill="#ee7f63"/>
+                <text x="486" y="99" fill="#fff" font-size="12.5" font-weight="700">실제 클릭 좌표</text>
+                <text x="486" y="116" fill="#9aa3b8" font-size="9.5">다음 실행엔 또 다른 점</text>
+              </svg>
+            </div>
+            <figcaption><b>중심점 + 클릭 보정으로 1차 목표를 정하고, 좌표 오차가 매번 다른 방향·거리로 한 번 더 밀어낸 뒤 클릭합니다.</b> "사람처럼 움직이기"를 꺼도 이 좌표 오차만은 별도로 계속 적용됩니다.</figcaption>
+          </figure>
+
+          <p style="font-size:13.6px; color:var(--text-dim);">⚠️ <b>좌표 오차를 0으로 낮추면 이 흔들림이 사라져 매번 정확히 같은 픽셀을 클릭합니다.</b> 탐지 회피가 중요한 용도라면 0으로 두지 않는 것을 권장합니다 — 경로(곡선·가속감속)만 사람처럼 흉내 내고 착지점이 항상 동일하면, 그 규칙성만으로도 걸러낼 수 있기 때문입니다.</p>
+        </div>
       </div>
     </section>
 
