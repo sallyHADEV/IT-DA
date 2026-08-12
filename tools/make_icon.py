@@ -1,7 +1,8 @@
 """앱 아이콘 생성.
 
 이미지 파일을 저장소에 두지 않고 그려서 만든다 — 테마 색이 바뀌면 다시 뽑으면 된다.
-모양은 잇다의 상징인 "이어진 두 노드"다.
+모양은 잇다의 상징인 "이어진 노드들" — 서로 다른 색의 노드 넷을 선으로 이어, 작은
+크기에서도 "여러 갈래가 하나로 이어진다"는 컨셉이 알록달록하게 남도록 그린다.
 
     python tools/make_icon.py
 """
@@ -19,14 +20,23 @@ ROOT = Path(__file__).resolve().parent.parent
 TARGET = ROOT / "itda" / "resources" / "itda.ico"
 SIZES = (16, 24, 32, 48, 64, 128, 256)
 
-BACKGROUND = QColor("#232936")
-NODE = QColor("#2a3040")
-ACCENT = QColor("#ee7f63")
-LINE = QColor("#7f8b9e")
+BACKGROUND = QColor("#1c2230")
+LINE = QColor(255, 255, 255, 130)
+
+#: 노드 네 개 — 위치(가로, 세로 비율), 색. 서로 다른 색으로 "여러 갈래"를 표현한다.
+NODES = (
+    (0.50, 0.16, QColor("#ee7f63")),  # 위 — 코럴 (시작)
+    (0.19, 0.50, QColor("#38c6d9")),  # 왼쪽 — 시안
+    (0.81, 0.50, QColor("#b083f0")),  # 오른쪽 — 보라
+    (0.50, 0.84, QColor("#5fd18c")),  # 아래 — 초록 (도착)
+)
+#: 노드를 잇는 선 (인덱스 쌍)
+EDGES = ((0, 1), (0, 2), (1, 3), (2, 3))
+NODE_RADIUS = 0.145
 
 
 def draw(size: int) -> QImage:
-    """이어진 두 노드. 작은 크기에서도 형태가 남도록 단순하게."""
+    """서로 다른 색의 노드 넷이 마름모꼴로 이어진 모양."""
     image = QImage(size, size, QImage.Format.Format_ARGB32)
     image.fill(Qt.GlobalColor.transparent)
 
@@ -38,24 +48,21 @@ def draw(size: int) -> QImage:
     painter.setBrush(QBrush(BACKGROUND))
     painter.drawRoundedRect(QRectF(0, 0, s, s), s * 0.22, s * 0.22)
 
-    # 연결선
-    pen = QPen(LINE, max(1.0, s * 0.055))
+    points = [QPointF(x * s, y * s) for x, y, _ in NODES]
+
+    # 연결선 — 노드보다 먼저 그려서 아래에 깔리게 한다
+    pen = QPen(LINE, max(1.0, s * 0.05))
     pen.setCapStyle(Qt.PenCapStyle.RoundCap)
     painter.setPen(pen)
-    painter.drawLine(QPointF(s * 0.34, s * 0.34), QPointF(s * 0.66, s * 0.66))
+    for a, b in EDGES:
+        painter.drawLine(points[a], points[b])
 
-    # 위 노드 (일반)
+    # 노드
     painter.setPen(Qt.PenStyle.NoPen)
-    painter.setBrush(QBrush(NODE))
-    painter.drawRoundedRect(QRectF(s * 0.14, s * 0.14, s * 0.34, s * 0.26), s * 0.07, s * 0.07)
-    painter.setBrush(QBrush(LINE))
-    painter.drawRoundedRect(QRectF(s * 0.14, s * 0.14, s * 0.06, s * 0.26), s * 0.03, s * 0.03)
-
-    # 아래 노드 (악센트 — 실행 중인 노드를 뜻한다)
-    painter.setBrush(QBrush(NODE))
-    painter.drawRoundedRect(QRectF(s * 0.52, s * 0.6, s * 0.34, s * 0.26), s * 0.07, s * 0.07)
-    painter.setBrush(QBrush(ACCENT))
-    painter.drawRoundedRect(QRectF(s * 0.52, s * 0.6, s * 0.06, s * 0.26), s * 0.03, s * 0.03)
+    r = s * NODE_RADIUS
+    for (x, y, color), point in zip(NODES, points):
+        painter.setBrush(QBrush(color))
+        painter.drawEllipse(point, r, r)
 
     painter.end()
     return image
