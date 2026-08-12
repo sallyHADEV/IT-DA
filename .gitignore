@@ -1,0 +1,23 @@
+__pycache__/
+*.py[cod]
+*.egg-info/
+build/
+dist/
+.venv/
+venv/
+.pytest_cache/
+.vscode/
+.idea/
+*.log
+
+# 사용자 작업 산출물
+/workspace/
+*.itda-backup
+/테스트 프로잭트/
+
+# 크레덴셜 및 환경 변수
+.env
+*.env
+*.key
+*.pem
+*.secret

@@ -1,0 +1,29 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "itda"
+version = "1.0.0"
+description = "잇다(IT-DA) — 플로우차트 기반 경량 범용 매크로 도구"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "PyQt6>=6.6",
+    "opencv-python>=4.9",
+    "numpy>=1.26",
+    "Pillow>=10.0",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=8.0"]
+
+[project.scripts]
+itda = "itda.app:main"
+
+[tool.setuptools.packages.find]
+include = ["itda*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"

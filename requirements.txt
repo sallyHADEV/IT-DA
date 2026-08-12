@@ -1,0 +1,9 @@
+# 잇다(IT-DA) 실행 의존성
+# Python 3.14 환경에서 휠이 확실한 것만 사용한다.
+PyQt6>=6.6
+opencv-python>=4.9
+numpy>=1.26
+Pillow>=10.0
+
+# 개발/테스트
+pytest>=8.0
